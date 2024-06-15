@@ -27,39 +27,46 @@ net=get_net(
     run_path='project_tac/15Jun24_13h42m54s-jake_long_train',
 )
 
-model = [module for module in net.modules() if not isinstance(module, nn.Sequential)]
+model=[]
+for m in net.modules():
+    model.append(m)
 
-for i in range(100):
+for i in rlen(model):
     print(i,model[i])
 
 imgs={}
 
-blank=get_blank_rgb(128,128)
+blank=get_blank_rgb(32,32)
 
 #,a
-layers=[2]
-layers=[2,4,5]
-layers=[2,4,5,8,9]
-layers=[2,4,5,8,9,12,13]
-layers=[2,4,5,8,9,12,13,16,17]
-#layers=[2,4,5,8,9,12,13,16,17,20,21]
+imgs={}
+blank=get_blank_rgb(32,32)
+layers=[1] #4,5,6]
+layers=[1,2]#4,5,6]
+layers=[1,2,3]#4,5,6]
+#layers=[1,2,3,]#4,5,6]
+
 for target_neuron in range(64):
     if True:#try:
-        input_image = torch.randn(1, 1, 128, 128, requires_grad=True,device='cuda:0')
-        input_image_big = torch.randn(1, 1, 128+4, 128+4, requires_grad=False,device='cuda:0')
+        input_image = torch.randn(1, 3, 32, 32, requires_grad=True,device='cuda:0')
+        input_image_big = torch.randn(1, 3, 32+4, 32+4, requires_grad=False,device='cuda:0')
         optimizer = optim.Adam([input_image], lr=0.1, weight_decay=1e-6)
         for i in range(200):
             input_image.requires_grad=False
             dx=np.random.choice([-1,0,1])
             dy=np.random.choice([-1,0,1])
-            input_image_big[0,0,1+dx:1+128+dx,1+dy:1+128+dy]=input_image
-            input_image[0,0,:,:]=input_image_big[0,0,1:128+1,1:128+1]
+            #input_image_big[0,0,1+dx:1+32+dx,1+dy:1+32+dy]=input_image
+            #input_image[0,0,:,:]=input_image_big[0,0,1:32+1,1:32+1]
             input_image.requires_grad=True
 
             optimizer.zero_grad()
         
             x = input_image
             for j in layers:
+                print(j,x.size())
+                if j==4:
+                    x = torch.flatten(x,start_dim=1)
+                    print('\t',j,x.size())
                 x = model[j](x)
             loss = -x[0, target_neuron].mean()+0e7*input_image.mean()
             loss.backward()
@@ -71,13 +78,15 @@ for target_neuron in range(64):
 
         optimized_image = input_image.detach().cpu().numpy()[0].transpose(1, 2, 0)
         for i in range(3):
-            blank[:,:,i]=(255*z2o(optimized_image[:,:,0])).astype(np.uint8)
+            blank[:,:,i]=(255*z2o(optimized_image[:,:,i])).astype(np.uint8)
         n=layers[-1]
         if n not in imgs:
             imgs[n]={}
         imgs[n][str(target_neuron)]=1*blank
-        figure(d2s(n),figsize=(18,18))
+        figure(d2s(n),figsize=(9,9))
         sh(imgs[n],d2s(n),r=0,use_dict_keys_as_titles=False)#optimized_image,target_neuron,r=0)
+#,b
+
 
     """
     except KeyboardInterrupt:
