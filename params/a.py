@@ -1,3 +1,2 @@
-batch_size=1
-num_workers=4
-device='cuda:0'
+run_path='project_tac/14Jun24_23h26m41s-with_net'
+
