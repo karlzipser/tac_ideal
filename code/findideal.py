@@ -43,7 +43,7 @@ from skimage import color
 
 jitters=[-1,1]+20*[0]
 for target_neuron in range(256):
-    print(target_neuron)
+    #print(target_neuron)
     try:
         input_image = torch.randn(1, 3, 32, 32,
             requires_grad=True,device=device)
@@ -68,7 +68,7 @@ for target_neuron in range(256):
                 x = model[j](x)
             #if target_neuron>=len(x):
             #    continue
-            print('*****',x.size(),target_neuron)
+            #print('*****',x.size(),target_neuron)
             tmean=-x[0, target_neuron].mean()
             imgmean=torch.abs(input_image-input_image.mean()).mean()
             loss = tmean+3*torch.abs(tmean)*imgmean/(.1+avg_saturation)
@@ -97,6 +97,8 @@ for target_neuron in range(256):
         print(d2s(exc_type,file_name,exc_tb.tb_lineno))   
     
 savefigs()
+print('plane', 'car', 'bird', 'cat',
+           'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
 input('here')
 
 
