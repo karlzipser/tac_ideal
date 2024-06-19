@@ -2,6 +2,6 @@
 if __name__ == '__main__':
     import sys
     print("Argument List:", str(sys.argv))
-    from .findideal import *
+    from .findideal2 import *
 
 #EOF
