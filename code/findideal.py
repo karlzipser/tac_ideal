@@ -61,10 +61,10 @@ layers=[1,2,3,4,5]
 from utilz2.torch_ import *
 from skimage import color
 for layers in [
-    [1],
-    [1,2],
-    [1,2,3],
-    [1,2,3,4],
+    #[1],
+    #[1,2],
+    #[1,2,3],
+    #[1,2,3,4],
     [1,2,3,4,5],
 ]:
     target_neuron=0
