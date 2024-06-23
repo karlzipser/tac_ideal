@@ -1,4 +1,3 @@
-#file: 'tac_ideal/code/findideal.py'
 ## 79 ########################################################################
 # python projutils/project.py --src tac_ideal --termout 0
 # python projutils/view.py --src project_tac_ideal
@@ -22,7 +21,7 @@ net=get_net(
     run_path=run_path,
 )
 
-model=nn.ModuleList()
+model=[]
 for m in net.modules():
     model.append(m)
 
@@ -46,7 +45,7 @@ def show_sample_outputs(outputs,labels):
         l[labels[i]]=1
         clf()
         plot(o/o.max(),'r')
-        #plot(o,'k')
+        plot(o,'k')
         plot(l,'b')
         #cm()
 #,a
@@ -59,14 +58,6 @@ layers=[1,2,3,4,5]
 #classes = ('plane', 'car', 'bird', 'cat',
 #           'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
 
-
-def custom_clip_grads(parameters, clip_value):
-    for p in parameters:
-        if p.grad is not None:
-            p.grad.data = p.grad.data.clamp(min=-clip_value, max=clip_value)
-
-
-
 from utilz2.torch_ import *
 from skimage import color
 for layers in [
@@ -77,10 +68,9 @@ for layers in [
     [1,2,3,4,5],
 ]:
     target_neuron=0
-    ntimer=Timer(60)
+    ntimer=Timer(10)
     jitters=[-1,1]+100*[0]
     todo=list(range(10))
-    #todo=[3]
     while todo:
         target_neuron=todo.pop(0)
     #for target_neuron in [2]:
@@ -100,7 +90,6 @@ for layers in [
                 dy=np.random.choice(jitters)
                 input_image_big[0,:,1+dx:1+32+dx,1+dy:1+32+dy]=input_image
                 input_image[0,:,:,:]=input_image_big[0,:,1:32+1,1:32+1]
-                #input_image=torch.nan_to_num(input_image)
                 try:
                     img=cuda_to_rgb_image(input_image)
                     img_hsv=color.rgb2hsv(img)
@@ -108,13 +97,9 @@ for layers in [
                     input_image.requires_grad=True
                 except:
                     print('exception: img=cuda_to_rgb_image(input_image)')
-                    input_image=1*input_image_prev
-                    input_image.requires_grad=True
-                    break
-                    #sh(input_image,100,title=str(time_str('Pretty2'),r=0))      
-                    #todo.append(target_neuron)
+                    todo.append(target_neuron)
                     ntimer.reset()
-                    continue
+                    break
 
 
                 optimizer.zero_grad()
@@ -130,8 +115,6 @@ for layers in [
                 #if target_neuron>=len(x):
                 #    continue
                 #print('*****',x.size(),target_neuron)
-                with torch.no_grad():
-                    input_image_prev=1*input_image
                 tmean=-x[0, target_neuron].mean()
                 y=3*x
                 y[0,target_neuron]=0
@@ -141,12 +124,6 @@ for layers in [
                 #print(tmean,imgmean,avg_saturation)
                 loss = 50*y.max()+ymean+tmean+1.*torch.abs(tmean)*(imgmean+avg_saturation)
                 loss.backward()
-
-
-                clip_value = 0.01
-                custom_clip_grads(model.parameters(), clip_value)
-                #torch.nn.utils.clip_grad_norm_(model.parameters(), 0.01)
-
                 optimizer.step()
                 if not i%100:
                     figure(10,figsize=(3,3))
