@@ -61,17 +61,19 @@ layers=[1,2,3,4,5]
 from utilz2.torch_ import *
 from skimage import color
 for layers in [
-    #[1],
-    #[1,2],
-    #[1,2,3],
-    #[1,2,3,4],
+    [1],
+    [1,2],
+    [1,2,3],
+    [1,2,3,4],
     [1,2,3,4,5],
 ]:
     target_neuron=0
-    ntimer=Timer(20)
+    ntimer=Timer(60)
     jitters=[-1,1]+100*[0]
-    while True:
-        target_neuron=randint(10)
+    todo=list(range(10))
+    todo.reverse()
+    while todo:
+        target_neuron=todo.pop()
     #for target_neuron in [2]:
         #print(target_neuron)
         if True:#try:
@@ -80,8 +82,9 @@ for layers in [
             input_image_big = torch.randn(1, 3, 32+4, 32+4,
                 requires_grad=False,device=device)
             optimizer = optim.Adam([input_image], lr=0.1, weight_decay=1e-6)
-            for i in range(50000):
+            for i in range(5000000):
                 if ntimer.rcheck():
+                    #outs[target_neuron]=
                     break
                 input_image.requires_grad=False
                 dx=np.random.choice(jitters)
@@ -90,11 +93,15 @@ for layers in [
                 input_image[0,:,:,:]=input_image_big[0,:,1:32+1,1:32+1]
                 try:
                     img=cuda_to_rgb_image(input_image)
+                    img_hsv=color.rgb2hsv(img)
+                    avg_saturation=np.mean(img_hsv[:,:,1])
+                    input_image.requires_grad=True
                 except:
+                    print('exception: img=cuda_to_rgb_image(input_image)')
+                    todo.append(target_neuron)
+                    ntimer.reset()
                     break
-                img_hsv=color.rgb2hsv(img)
-                avg_saturation=np.mean(img_hsv[:,:,1])
-                input_image.requires_grad=True
+
 
                 optimizer.zero_grad()
             
@@ -115,11 +122,11 @@ for layers in [
                 y=y/y.max()
                 ymean=y[0, target_neuron].mean()
                 imgmean=torch.abs(input_image-input_image.mean()).mean()
-                print(tmean,imgmean,avg_saturation)
+                #print(tmean,imgmean,avg_saturation)
                 loss = 50*y.max()+ymean+tmean+1.*torch.abs(tmean)*(imgmean+avg_saturation)
                 loss.backward()
                 optimizer.step()
-                if not i%10:
+                if not i%100:
                     sh(input_image,10)
                     figure(11)
                     show_sample_outputs(x,[target_neuron])
