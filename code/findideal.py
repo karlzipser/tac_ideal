@@ -69,7 +69,7 @@ for layers in [
     [1,2,3,4,5],
 ]:
     target_neuron=0
-    ntimer=Timer(10)
+    ntimer=Timer(2)
     jitters=[-1,1]+100*[0]
     todo=list(range(10))
     while todo:
@@ -81,7 +81,7 @@ for layers in [
                 requires_grad=True,device=device)
             input_image_big = torch.randn(1, 3, 32+4, 32+4,
                 requires_grad=False,device=device)
-            optimizer = optim.Adam([input_image], lr=0.05, weight_decay=1e-6)
+            optimizer = optim.Adam([input_image], lr=0.1, weight_decay=1e-6)
             for i in range(5000000):
                 if ntimer.rcheck():
                     #outs[target_neuron]=
