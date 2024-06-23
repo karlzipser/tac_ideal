@@ -1,4 +1,3 @@
-file: 'tac_ideal/code/findideal.py'
 ## 79 ########################################################################
 # python projutils/project.py --src tac_ideal --termout 0
 # python projutils/view.py --src project_tac_ideal
@@ -69,9 +68,10 @@ for layers in [
     [1,2,3,4,5],
 ]:
     target_neuron=0
-    ntimer=Timer(10)
+    ntimer=Timer(60)
     jitters=[-1,1]+100*[0]
     todo=list(range(10))
+    todo.reverse()
     while todo:
         target_neuron=todo.pop()
     #for target_neuron in [2]:
@@ -123,12 +123,14 @@ for layers in [
                 ymean=y[0, target_neuron].mean()
                 imgmean=torch.abs(input_image-input_image.mean()).mean()
                 #print(tmean,imgmean,avg_saturation)
-                loss = 50*y.max()+ymean+tmean+1.*torch.abs(tmean)*(imgmean+avg_saturation)
+                #loss = 50*y.max()+ymean+tmean+1.*torch.abs(tmean)*(imgmean+avg_saturation)
+                loss = 10*y.max()+ymean+tmean+0.3*torch.abs(tmean)*(imgmean+avg_saturation)
                 loss.backward()
                 optimizer.step()
                 if not i%100:
+                    figure(10,figsize=(3,3))
                     sh(input_image,10)
-                    figure(11)
+                    figure(11,figsize=(3,3))
                     show_sample_outputs(x,[target_neuron])
                     spause()
                 with torch.no_grad():
