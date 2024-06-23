@@ -98,9 +98,9 @@ for layers in [
                     input_image.requires_grad=True
                 except:
                     print('exception: img=cuda_to_rgb_image(input_image)')
-                    #todo.append(target_neuron)
-                    #ntimer.reset()
-                    #break
+                    todo.append(target_neuron)
+                    ntimer.reset()
+                    break
 
 
                 optimizer.zero_grad()
