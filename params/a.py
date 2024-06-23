@@ -2,6 +2,7 @@
 from utilz2 import *
 if host_name=='hiMac':
 	run_path='project_tac/20Jun24_12h29m11s'
+	run_path='project_tac/21Jun24_23h10m13s'
 elif host_name=='jane':
 	run_path='project_tac/21Jun24_23h10m13s'
 device='cuda:1'
