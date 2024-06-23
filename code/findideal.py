@@ -73,7 +73,7 @@ for layers in [
     jitters=[-1,1]+100*[0]
     todo=list(range(10))
     while todo:
-        target_neuron=todo.pop()
+        target_neuron=todo.pop(0)
     #for target_neuron in [2]:
         #print(target_neuron)
         if True:#try:
