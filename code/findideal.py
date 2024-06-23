@@ -88,7 +88,10 @@ for layers in [
                 dy=np.random.choice(jitters)
                 input_image_big[0,:,1+dx:1+32+dx,1+dy:1+32+dy]=input_image
                 input_image[0,:,:,:]=input_image_big[0,:,1:32+1,1:32+1]
-                img=cuda_to_rgb_image(input_image)
+                try:
+                    img=cuda_to_rgb_image(input_image)
+                except:
+                    break
                 img_hsv=color.rgb2hsv(img)
                 avg_saturation=np.mean(img_hsv[:,:,1])
                 input_image.requires_grad=True
