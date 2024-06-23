@@ -81,7 +81,7 @@ for layers in [
                 requires_grad=True,device=device)
             input_image_big = torch.randn(1, 3, 32+4, 32+4,
                 requires_grad=False,device=device)
-            optimizer = optim.Adam([input_image], lr=0.01, weight_decay=1e-6)
+            optimizer = optim.Adam([input_image], lr=0.1, weight_decay=1e-6)
             for i in range(5000000):
                 if ntimer.rcheck():
                     #outs[target_neuron]=
@@ -98,9 +98,9 @@ for layers in [
                     input_image.requires_grad=True
                 except:
                     print('exception: img=cuda_to_rgb_image(input_image)')
-                    todo.append(target_neuron)
-                    ntimer.reset()
-                    break
+                    #todo.append(target_neuron)
+                    #ntimer.reset()
+                    #break
 
 
                 optimizer.zero_grad()
@@ -127,8 +127,9 @@ for layers in [
                 loss.backward()
                 optimizer.step()
                 if not i%100:
+                    figure(10,figsize=(3,3))
                     sh(input_image,10)
-                    figure(11)
+                    figure(11,figsize=(3,3))
                     show_sample_outputs(x,[target_neuron])
                     spause()
                 with torch.no_grad():
