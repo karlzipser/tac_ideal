@@ -32,6 +32,22 @@ imgs={}
 
 blank=get_blank_rgb(32,32)
 
+def show_sample_outputs(outputs,labels):
+    outputs=outputs.detach().cpu().numpy()
+    #labels=labels.detach().cpu().numpy()
+    #print(outputs)
+    #print(labels)
+    #print(shape(outputs))
+    #print(shape(labels))
+    for i in range(1):
+        o=outputs[i,:,0,0]
+        l=0*o
+        l[labels[i]]=1
+        clf()
+        plot(o/o.max(),'r')
+        plot(o,'k')
+        plot(l,'b')
+        #cm()
 #,a
 imgs={}
 blank=get_blank_rgb(32,32)
@@ -39,25 +55,28 @@ layers=[1] #4,5,6]
 layers=[1]#4,5,6]
 layers=[1,2,3,4,5]
 #layers=[1,2,3,]#4,5,6]
+#classes = ('plane', 'car', 'bird', 'cat',
+#           'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
+
 from utilz2.torch_ import *
 from skimage import color
 for layers in [
-    [1],
-    [1,2],
-    [1,2,3],
-    [1,2,3,4],
+    #[1],
+    #[1,2],
+    #[1,2,3],
+    #[1,2,3,4],
     [1,2,3,4,5],
 ]:
-    jitters=[-1,1]+20*[0]
-    for target_neuron in range(256):
+    jitters=[-1,1]+100*[0]
+    for target_neuron in [2]:
         #print(target_neuron)
-        try:
+        if True:#try:
             input_image = torch.randn(1, 3, 32, 32,
                 requires_grad=True,device=device)
             input_image_big = torch.randn(1, 3, 32+4, 32+4,
                 requires_grad=False,device=device)
-            optimizer = optim.Adam([input_image], lr=0.01, weight_decay=1e-6)
-            for i in range(500):
+            optimizer = optim.Adam([input_image], lr=0.1, weight_decay=1e-6)
+            for i in range(50000):
                 input_image.requires_grad=False
                 dx=np.random.choice(jitters)
                 dy=np.random.choice(jitters)
@@ -71,18 +90,33 @@ for layers in [
                 optimizer.zero_grad()
             
                 x = input_image
+                ctr=1
                 for j in layers:
                     x = model[j](x)
+                    if ctr<5:
+                        x=torch.nn.functional.relu(x)
+                    ctr+=1
+
                 #if target_neuron>=len(x):
                 #    continue
                 #print('*****',x.size(),target_neuron)
                 tmean=-x[0, target_neuron].mean()
+                y=3*x
+                y[0,target_neuron]=0
+                y=y/y.max()
+                ymean=y[0, target_neuron].mean()
                 imgmean=torch.abs(input_image-input_image.mean()).mean()
-                loss = tmean+3*torch.abs(tmean)*imgmean/(.1+avg_saturation)
+                print(tmean,imgmean,avg_saturation)
+                loss = 50*y.max()+ymean+tmean+1.*torch.abs(tmean)*(imgmean+avg_saturation)
                 loss.backward()
                 optimizer.step()
+                if not i%10:
+                    sh(input_image,10)
+                    figure(11)
+                    show_sample_outputs(x,[target_neuron])
+                    spause()
                 with torch.no_grad():
-                    input_image.clamp_(0, 1)
+                    input_image.clamp_(-1, 1)
             optimized_image = input_image.detach().cpu().numpy()[0].transpose(1, 2, 0)
             for i in range(3):
                 blank[:,:,i]=(255*z2o(optimized_image[:,:,i])).astype(np.uint8)
@@ -93,7 +127,7 @@ for layers in [
             figure(d2s(n),figsize=(9,9))
             sh(imgs[n],d2s(n),r=0,use_dict_keys_as_titles=False)
 
-        
+        """
         except KeyboardInterrupt:
             cr('*** KeyboardInterrupt ***')
             sys.exit()
@@ -103,7 +137,7 @@ for layers in [
             #file_name = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             #print('Exception!')
             #print(d2s(exc_type,file_name,exc_tb.tb_lineno))   
-        
+        """
 
 
 
