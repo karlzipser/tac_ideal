@@ -54,7 +54,7 @@ for i in range(4):
     image,label=next(iter)
     cb(image)
     cy(label)
-    sh(image,title=label[0])
+    sh(image,title=str(label[0]))
     time_sleep(1)
 
 stats,acc_mean=get_accuracy(net,train_loader,list(range(10)),device)
