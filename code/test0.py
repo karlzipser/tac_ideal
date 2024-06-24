@@ -52,6 +52,8 @@ train_loader = DataLoader(train_data, batch_size=1, shuffle=True)
 iter=iter(train_loader)
 for i in range(4):
     image,label=next(iter)
+    cb(image)
+    cy(label)
     sh(image,title=label[0])
     time_sleep(1)
 
