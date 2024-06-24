@@ -37,7 +37,7 @@ class ImageDataset(Dataset):
             for image in os.listdir(os.path.join(root, category)):
                 self.images.append(os.path.join(root, category, image))
                 self.labels.append(float(category))
-
+        cE(self.labels)
     def __len__(self):
         return len(self.images)
 
