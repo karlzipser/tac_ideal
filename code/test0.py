@@ -22,10 +22,10 @@ net=get_net(
     run_path=run_path,
 )
 
-
-
 from torch.utils.data import DataLoader, Dataset
 from torchvision import datasets, transforms
+classes = ('plane', 'car', 'bird', 'cat',
+           'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
 
 class ImageDataset(Dataset):
     def __init__(self, root, transform=None):
@@ -50,9 +50,12 @@ class ImageDataset(Dataset):
 train_data = ImageDataset(root=opjD('data/gen0'), transform=transforms.ToTensor())
 train_loader = DataLoader(train_data, batch_size=1, shuffle=True)
 iter=iter(train_loader)
-while True:
+for i in range(4):
     image,label=next(iter)
-    sh(image,title=label[0],r=1)
+    sh(image,title=label[0])
+    time_sleep(1)
 
+stats,acc_mean=get_accuracy(net,train_loader,classes,device)
+print(stats)
 
 #EOF
