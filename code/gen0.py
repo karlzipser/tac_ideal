@@ -30,7 +30,7 @@ for i in rlen(model):
     print(i,model[i])
 
 imgs={}
-
+save_timer=Timer(1)
 blank=get_blank_rgb(32,32)
 
 def show_sample_outputs(outputs,labels):
@@ -55,6 +55,11 @@ def custom_clip_grads(parameters, clip_value):
     for p in parameters:
         if p.grad is not None:
             p.grad.data = p.grad.data.clamp(min=-clip_value, max=clip_value)
+
+def save_img(optimized_image,category,path):
+    blank=get_blank_rgb(32,32)
+    blank[:,:,i]=(255*z2o(optimized_image[:,:,i])).astype(np.uint8)
+    imsave(opj(path,category,time_str()+'png'))
 
 from utilz2.torch_ import *
 from skimage import color
@@ -89,10 +94,11 @@ for layers in [
                 except:
                     print('exception: img=cuda_to_rgb_image(input_image)')
                     input_image=1*input_image_prev
-                    input_image.requires_grad=True
+                    save_img(input_image,target_neuron,datapath)
+                    #input_image.requires_grad=True
                     break
-                    ntimer.reset()
-                    continue
+                    #ntimer.reset()
+                    #continue
                 optimizer.zero_grad()
             
                 x = input_image
@@ -124,6 +130,8 @@ for layers in [
                     spause()
                 with torch.no_grad():
                     input_image.clamp_(-1, 1)
+                if save_timer.rcheck():
+                    save_img(input_image,target_neuron,datapath)
             optimized_image = input_image.detach().cpu().numpy()[0].transpose(1, 2, 0)
             for i in range(3):
                 blank[:,:,i]=(255*z2o(optimized_image[:,:,i])).astype(np.uint8)
