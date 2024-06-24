@@ -57,7 +57,7 @@ for i in range(4):
     sh(image,title=str(label[0]))
     time_sleep(1)
 
-stats,acc_mean=get_accuracy(net,train_loader,list(range(10)),device)
+stats,acc_mean=get_accuracy(net,train_loader,arange(10),device)
 print(stats)
 
 #EOF
