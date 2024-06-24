@@ -5,11 +5,13 @@ from utilz2 import *
 if __name__ == '__main__':
     import sys
     print("Argument List:", str(sys.argv))
-    s=select_from_list(['findideal','gen0'])
+    s=select_from_list(['findideal','gen0','test0'])
     if s=='findideal':
         from .findideal import *
     elif s=='gen0':
         from .gen0 import *
+    elif s=='test0':
+        from .test0 import *
     else:
         assert False
 
