@@ -47,6 +47,7 @@ class ImageDataset(Dataset):
 
     def __getitem__(self, index):
         image = rimread(self.images[index])
+        image=fix_bgr(image)
         image/=255.
         image-=0.5
         image*=2.
