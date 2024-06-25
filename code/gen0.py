@@ -60,7 +60,7 @@ def save_img(optimized_image,category,path):
     #blank=get_blank_rgb(32,32)
     #blank=255*z2o(optimized_image).astype(np.uint8)
     mkdirp(opj(path,category))
-    imsave(opj(path,category,time_str()+'.png'),cuda_to_rgb_image(optimized_image))
+    rimsave(opj(path,category,time_str()+'.png'),cuda_to_rgb_image(optimized_image))
 
 from utilz2.torch_ import *
 from skimage import color
@@ -68,7 +68,7 @@ for layers in [
     [1,2,3,4,5],
 ]:
     target_neuron=0
-    ntimer=Timer(60)
+    ntimer=Timer(10)
     jitters=[-1,1]+100*[0]
     todo=list(range(10))
     while todo:
@@ -95,7 +95,7 @@ for layers in [
                 except:
                     print('exception: img=cuda_to_rgb_image(input_image)')
                     input_image=1*input_image_prev
-                    save_img(input_image,target_neuron,datapath)
+                    save_img(input_image,classes[target_neuron],datapath)
                     #input_image.requires_grad=True
                     break
                     #ntimer.reset()
