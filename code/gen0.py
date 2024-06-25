@@ -102,7 +102,7 @@ for repeat in range(repeats):
                         input_image=1*input_image_prev
                         save_img(input_image,classes[target_neuron],datapath)
                         #input_image.requires_grad=True
-                        if len(sggo(datapath,classes[target_neuron],'*.png'))<200:
+                        if len(sggo(datapath,classes[target_neuron],'*.png'))<10000000:
                             todo.append(target_neuron)
                         break
                         #ntimer.reset()
