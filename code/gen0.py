@@ -82,7 +82,7 @@ for layers in [
             for i in range(5000000):
                 if ntimer.rcheck():
                     break
-                if len(sggo(datapath,classes[target_neuron],'*.png'))>=48:
+                if len(sggo(datapath,classes[target_neuron],'*.png'))>=200:
                     break
                 input_image.requires_grad=False
                 dx=np.random.choice(jitters)
