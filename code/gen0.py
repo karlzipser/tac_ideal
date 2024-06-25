@@ -82,6 +82,8 @@ for layers in [
             for i in range(5000000):
                 if ntimer.rcheck():
                     break
+                if len(sggo(datapath,classes[target_neuron],'*.png'))>=48:
+                    break
                 input_image.requires_grad=False
                 dx=np.random.choice(jitters)
                 dy=np.random.choice(jitters)
@@ -97,6 +99,8 @@ for layers in [
                     input_image=1*input_image_prev
                     save_img(input_image,classes[target_neuron],datapath)
                     #input_image.requires_grad=True
+                    if len(sggo(datapath,classes[target_neuron],'*.png'))<48:
+                        todo.append(target_neuron)
                     break
                     #ntimer.reset()
                     #continue
