@@ -41,15 +41,14 @@ class ImageDataset(Dataset):
                 self.images.append(image)
                 self.labels.append(fname(cf))
                 print(self.images[-1],self.labels[-1])
-        cE(self.labels)
     def __len__(self):
         return len(self.images)
 
     def __getitem__(self, index):
         image = rimread(self.images[index])
-        image=fix_bgr(image)
+        #image=fix_bgr(image)
 
-        sh(z55(image),title=d2s(image.max(),image.min()),r=1)
+        sh(z55(image),title=d2s(image.max(),image.min()),r=0)
         if self.transform:
             image = self.transform(image)
             #image=image/255.
