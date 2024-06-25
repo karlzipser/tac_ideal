@@ -73,7 +73,7 @@ for layers in [
     todo=list(range(10))
     while todo:
         target_neuron=todo.pop(0)
-        if True:#try:
+        if try:
             input_image = torch.randn(1, 3, 32, 32,
                 requires_grad=True,device=device)
             input_image_big = torch.randn(1, 3, 32+4, 32+4,
@@ -99,7 +99,7 @@ for layers in [
                     input_image=1*input_image_prev
                     save_img(input_image,classes[target_neuron],datapath)
                     #input_image.requires_grad=True
-                    if len(sggo(datapath,classes[target_neuron],'*.png'))<48:
+                    if len(sggo(datapath,classes[target_neuron],'*.png'))<200:
                         todo.append(target_neuron)
                     break
                     #ntimer.reset()
@@ -146,7 +146,7 @@ for layers in [
             imgs[n][str(target_neuron)]=1*blank
             figure(d2s(n),figsize=(9,9))
             sh(imgs[n],d2s(n),r=0,use_dict_keys_as_titles=False)
-        """
+        
         except KeyboardInterrupt:
             cr('*** KeyboardInterrupt ***')
             sys.exit()
@@ -156,7 +156,7 @@ for layers in [
             #file_name = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             #print('Exception!')
             #print(d2s(exc_type,file_name,exc_tb.tb_lineno))   
-        """
+        
 
 savefigs(figures_path)
 print('plane', 'car', 'bird', 'cat',
