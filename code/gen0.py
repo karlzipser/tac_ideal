@@ -16,7 +16,7 @@ from projutils import *
 from ..params.a import *
 
 for repeat in range(repeats):
-
+    cE(repeat)
     device = torch.device(device if torch.cuda.is_available() else 'cpu')
 
     net=get_net(
@@ -85,7 +85,7 @@ for repeat in range(repeats):
                 for i in range(5000000):
                     if ntimer.rcheck():
                         break
-                    if len(sggo(datapath,classes[target_neuron],'*.png'))>=200:
+                    if len(sggo(datapath,classes[target_neuron],'*.png'))>=10000000:
                         break
                     input_image.requires_grad=False
                     dx=np.random.choice(jitters)
