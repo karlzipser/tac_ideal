@@ -73,7 +73,7 @@ for layers in [
     todo=list(range(10))
     while todo:
         target_neuron=todo.pop(0)
-        if try:
+        try:
             input_image = torch.randn(1, 3, 32, 32,
                 requires_grad=True,device=device)
             input_image_big = torch.randn(1, 3, 32+4, 32+4,
