@@ -27,7 +27,7 @@ from torchvision import datasets, transforms
 classes = ('plane', 'car', 'bird', 'cat',
            'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
 
-class ImageDataset(Dataset):
+class GenDataset(Dataset):
     def __init__(self, root, transform=None):
         self.root = root
         self.transform = transform
@@ -46,18 +46,14 @@ class ImageDataset(Dataset):
 
     def __getitem__(self, index):
         image = rimread(self.images[index])
-        #image=fix_bgr(image)
-
         #sh(z55(image),title=d2s(image.max(),image.min()),r=0)
         if self.transform:
             image = self.transform(image)
-            #image=image/255.
             image-=0.5
             image*=2.
-            #print(image.min(),image.max())
         return image, self.labels[index]
 
-train_data = ImageDataset(root=opjD('data/gen0'), transform=transforms.ToTensor())
+train_data = GenDataset(root=opjD('data/gen0'), transform=transforms.ToTensor())
 train_loader = DataLoader(train_data, batch_size=1, shuffle=True)
 
 transform = transforms.Compose(
