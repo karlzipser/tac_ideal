@@ -48,8 +48,8 @@ def show_sample_outputs(outputs,labels):
 imgs={}
 blank=get_blank_rgb(32,32)
 
-#classes = ('plane', 'car', 'bird', 'cat',
-#           'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
+classes = ('plane', 'car', 'bird', 'cat',
+           'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
 
 def custom_clip_grads(parameters, clip_value):
     for p in parameters:
@@ -131,8 +131,8 @@ for layers in [
                     spause()
                 with torch.no_grad():
                     input_image.clamp_(-1, 1)
-                if save_timer.rcheck():
-                    save_img(input_image,target_neuron,datapath)
+                if save_timer.rcheck() and save_timer.time()>10:
+                    save_img(input_image,classes[target_neuron],datapath)
             optimized_image = input_image.detach().cpu().numpy()[0].transpose(1, 2, 0)
             for i in range(3):
                 blank[:,:,i]=(255*z2o(optimized_image[:,:,i])).astype(np.uint8)
