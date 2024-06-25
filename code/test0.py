@@ -55,6 +55,7 @@ class ImageDataset(Dataset):
             image=image/255.
             image-=0.5
             image*=2.
+            print(image.min(),image.max())
         return image, self.labels[index]
 
 train_data = ImageDataset(root=opjD('data/gen0'), transform=transforms.ToTensor())
