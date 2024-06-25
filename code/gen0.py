@@ -68,7 +68,7 @@ for layers in [
     [1,2,3,4,5],
 ]:
     target_neuron=0
-    ntimer=Timer(10)
+    ntimer=Timer(60)
     jitters=[-1,1]+100*[0]
     todo=list(range(10))
     while todo:
@@ -131,7 +131,7 @@ for layers in [
                     spause()
                 with torch.no_grad():
                     input_image.clamp_(-1, 1)
-                if save_timer.rcheck():# and save_timer.time()>10:
+                if save_timer.rcheck() and ntimer.time()>10:
                     save_img(input_image,classes[target_neuron],datapath)
             optimized_image = input_image.detach().cpu().numpy()[0].transpose(1, 2, 0)
             for i in range(3):
