@@ -20,6 +20,7 @@ device = torch.device(device if torch.cuda.is_available() else 'cpu')
 net=get_net(
     device=device,
     run_path=run_path,
+    latest=True,
 )
 
 model=nn.ModuleList()
