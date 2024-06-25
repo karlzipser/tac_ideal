@@ -47,7 +47,10 @@ class ImageDataset(Dataset):
 
     def __getitem__(self, index):
         image = rimread(self.images[index])
-        sh(image,title=d2s(image.max(),image.min()),r=1)
+        image/=255.
+        image-=0.5
+        image*=2.
+        sh(z55(image),title=d2s(image.max(),image.min()),r=1)
         if self.transform:
             image = self.transform(image)
         return image, self.labels[index]
