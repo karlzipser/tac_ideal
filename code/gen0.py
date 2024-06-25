@@ -60,7 +60,7 @@ def save_img(optimized_image,category,path):
     #blank=get_blank_rgb(32,32)
     #blank=255*z2o(optimized_image).astype(np.uint8)
     mkdirp(opj(path,category))
-    rimsave(opj(path,category,time_str()+'.png'),cuda_to_rgb_image(optimized_image))
+    imsave(opj(path,category,time_str()+'.png'),cuda_to_rgb_image(optimized_image))
 
 from utilz2.torch_ import *
 from skimage import color
