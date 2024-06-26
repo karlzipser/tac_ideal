@@ -46,7 +46,7 @@ for repeat in range(repeats):
             plot(o/o.max(),'r')
             #plot(o,'k')
             plot(l,'b')
-            if labels[i]=np.argmax(outputs):
+            if labels[i]==np.argmax(outputs):
                 answer=True
             else:
                 answer=False
