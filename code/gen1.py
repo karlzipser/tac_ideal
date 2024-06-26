@@ -314,8 +314,8 @@ for repeat in range(repeats):
 
                 while True:
                     train_inputs,train_labels=next(gen_train_dataiter)
-                    print(train_labels[0],target_neuron)
-                    if train_labels[0]==target_neuron:
+                    print(classes2nums[train_labels[0]],target_neuron)
+                    if train_labels[1]==target_neuron:
                         break
                 input_image=train_inputs
                 cb(input_image.size())
