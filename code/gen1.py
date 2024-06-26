@@ -46,6 +46,11 @@ for repeat in range(repeats):
             plot(o/o.max(),'r')
             #plot(o,'k')
             plot(l,'b')
+            if labels[i]=np.argmax(outputs):
+                answer=True
+            else:
+                answer=False
+            return answer
             #cm()
     #
     imgs={}
@@ -134,8 +139,8 @@ for repeat in range(repeats):
                         figure(10,figsize=(3,3))
                         sh(input_image,10)
                         figure(11,figsize=(3,3))
-                        show_sample_outputs(x,[target_neuron])
-                        plt.title(classes[target_neuron])
+                        answer=show_sample_outputs(x,[target_neuron])
+                        plt.title(d2s(classes[target_neuron],answer)
                         spause()
                     with torch.no_grad():
                         input_image.clamp_(-1, 1)
