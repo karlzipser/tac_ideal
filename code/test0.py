@@ -88,6 +88,7 @@ def get_accuracy(net,testloader,classes,device):
                 else:
                     #mkdirp(pname(f)+'-incorrect')
                     os_system('mv',f,pname(f)+'-incorrect')
+                    time_sleep(0.2)
                     #print(f,'is incorrect')
                     #sh(images[ctr,:])
                 ctr+=1
