@@ -103,10 +103,10 @@ def get_accuracy(net,testloader,classes,device):
 
 iter=iter(train_loader)
 for i in range(4):
-    image,label=next(iter)
+    image,label,f=next(iter)
     #cb(image)
     #cy(label)
-    sh(image,title=str(label[0]))
+    sh(image,title=d2s(f,label[0]))
     time_sleep(.1)
 #classes=[0,1,2,3,4,5,6,7,8,9]
 classes = ('plane', 'car', 'bird', 'cat',
