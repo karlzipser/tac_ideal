@@ -135,6 +135,8 @@ for repeat in range(repeats):
                     clip_value = 0.01
                     custom_clip_grads(model.parameters(), clip_value)
                     optimizer.step()
+                    with torch.no_grad():
+                        input_image.clamp_(-1, 1)
                     if not i%100:
                         figure(10,figsize=(3,3))
                         sh(input_image,10)
@@ -142,10 +144,11 @@ for repeat in range(repeats):
                         answer=show_sample_outputs(x,[target_neuron])
                         plt.title(d2s(classes[target_neuron],answer)
                         spause()
-                    with torch.no_grad():
-                        input_image.clamp_(-1, 1)
-                    if save_timer.rcheck() and ntimer.time()>10:
-                        save_img(input_image,classes[target_neuron],opjD('data/gen1'))
+                        if save_timer.rcheck() and ntimer.time()>10:
+                            if answer:
+                                save_img(input_image,classes[target_neuron],opjD('data/gen1'))
+                            else:
+                                save_timer.trigger()
                 optimized_image = input_image.detach().cpu().numpy()[0].transpose(1, 2, 0)
                 for i in range(3):
                     blank[:,:,i]=(255*z2o(optimized_image[:,:,i])).astype(np.uint8)
