@@ -325,7 +325,7 @@ for repeat in range(repeats):
 
                 input_image_big = torch.randn(1, 3, 32+4, 32+4,
                     requires_grad=False,device=device)
-                optimizer = optim.Adam([input_image], lr=0.5, weight_decay=1e-6)
+                optimizer = optim.Adam([input_image], lr=0.01, weight_decay=1e-6)
                 for i in range(5000000):
                     if ntimer.rcheck():
                         break
