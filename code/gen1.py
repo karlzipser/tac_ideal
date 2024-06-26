@@ -15,6 +15,94 @@ if 'project_' in __file__:
 from projutils import *
 from ..params.a import *
 
+
+
+def get_transforms(d,image_size):
+
+    geometric_transforms_list=[]
+
+    k='RandomPerspective'
+    if k in d and d[k]:
+        geometric_transforms_list.append(
+            v2.RandomPerspective(
+                distortion_scale=d['RandomPerspective_distortion_scale'],
+                p=d['RandomPerspective_p'],
+                interpolation=transforms.InterpolationMode.BILINEAR,
+                fill=d['RandomPerspective_fill'],
+            )
+        )
+
+    k='RandomRotation'
+    if k in d and d[k]:
+        geometric_transforms_list.append(
+            v2.RandomRotation(d['RandomRotation_angle'],fill=d['RandomRotation_fill'])
+        )
+
+    k='RandomZoomOut'
+    if k in d and d[k]:
+        geometric_transforms_list.append(
+            v2.RandomZoomOut(side_range=d['RandomZoomOut_side_range'],fill=d['RandomZoomOut_fill'])
+        )
+
+
+    k='Pad'
+    if k in d and d[k]:
+        geometric_transforms_list.append(
+            #v2.Pad(padding=(640-360)//2,fill=d['Pad_fill)
+            v2.Pad(padding=64,fill=d['Pad_fill'])
+        )
+
+    k='CenterCrop'
+    if k in d and d[k]:
+        geometric_transforms_list.append(
+            v2.CenterCrop(size=640)
+        )
+
+    
+    k='RandomResizedCrop'
+    if k in d and d[k]:
+        geometric_transforms_list.append(
+            v2.RandomResizedCrop(
+                image_size,
+                scale=d['RandomResizedCrop_scale'],
+                ratio=d['RandomResizedCrop_ratio'],
+                antialias=True,
+            )
+        )
+
+    k='Resize'
+    if k in d and d[k]:
+        geometric_transforms_list.append(
+            v2.Resize(size=image_size,antialias=True)
+        )
+    
+    k='RandomHorizontalFlip'
+    if k in d and d[k]:
+        geometric_transforms_list.append(
+            v2.RandomHorizontalFlip(p=d['RandomHorizontalFlip_p'])
+        )
+        
+    k='RandomVerticalFlip'
+    if k in d and d[k]:
+        geometric_transforms_list.append(
+            v2.RandomVerticalFlip(p=d['RandomVerticalFlip_p'])
+        )
+
+    color_transforms_list=[]
+    k='ColorJitter'
+    if k in d and d[k]:
+        color_transforms_list.append(
+            v2.ColorJitter(
+                brightness=d['ColorJitter_brightness'],
+                contrast=d['ColorJitter_contrast'],
+                saturation=d['ColorJitter_saturation'],
+                hue=d['ColorJitter_hue'],
+            )
+        )
+
+    return geometric_transforms_list,color_transforms_list
+
+
 _fill=(0,0,0)
 transforms_dict=dict(
     RandomPerspective=True,
