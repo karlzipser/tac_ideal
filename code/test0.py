@@ -51,7 +51,7 @@ class GenDataset(Dataset):
             image = self.transform(image)
             image-=0.5
             image*=2.
-        return image, self.labels[index]
+        return image, self.labels[index], self.images[index]
 
 train_data = GenDataset(root=opjD('data/gen0'), transform=transforms.ToTensor())
 train_loader = DataLoader(train_data, batch_size=1, shuffle=True)
@@ -74,16 +74,18 @@ def get_accuracy(net,testloader,classes,device):
     total_pred = {str(classname): 0 for classname in classes}
     with torch.no_grad():
         for data in testloader:
-            images, labels = data
+            images, labels, fs = data
             #cb(images)
             #cy(labels)
             images=images.to(device)
             #labels=labels.to(device)
             outputs = net(images)
             _, predictions = torch.max(outputs, 1)
-            for label, prediction in zip(labels, predictions):
+            for label, prediction, f in zip(labels, predictions, fs):
                 if label_i[label] == prediction:
                     correct_pred[classes[label_i[label]]] += 1
+                else:
+                    print(f,'is incorrect')
                 total_pred[classes[label_i[label]]] += 1
     stats=[]
     ctr=0
