@@ -156,7 +156,7 @@ for repeat in range(repeats):
                 input_image=train_inputs
                 cb(input_image.size())
                 #input_image = torch.randn(1, 3, 32, 32,
-                input_image=input.todevice)
+                input_image=input_image.to(device)
                 input_image.requires_grad=True
 
                 input_image_big = torch.randn(1, 3, 32+4, 32+4,
