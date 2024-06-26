@@ -15,7 +15,7 @@ if 'project_' in __file__:
 from projutils import *
 from ..params.a import *
 
-
+_fill=(0,0,0)
 transforms_dict=dict(
     RandomPerspective=True,
     RandomPerspective_distortion_scale=0.3,
