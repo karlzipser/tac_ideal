@@ -385,7 +385,7 @@ for repeat in range(repeats):
                         spause()
                         if save_timer.rcheck() and ntimer.time()>10:
                             if answer:
-                                save_img(input_image,classes[target_neuron],opjD('data/gen1'))
+                                save_img(input_image,classes[target_neuron],opjD('data/gen0'))
                             else:
                                 save_timer.trigger()
                 optimized_image = input_image.detach().cpu().numpy()[0].transpose(1, 2, 0)
