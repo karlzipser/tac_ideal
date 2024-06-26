@@ -142,7 +142,7 @@ for repeat in range(repeats):
                         sh(input_image,10)
                         figure(11,figsize=(3,3))
                         answer=show_sample_outputs(x,[target_neuron])
-                        plt.title(d2s(classes[target_neuron],answer)
+                        plt.title(d2s(classes[target_neuron],answer))
                         spause()
                         if save_timer.rcheck() and ntimer.time()>10:
                             if answer:
