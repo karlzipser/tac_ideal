@@ -294,7 +294,7 @@ for repeat in range(repeats):
         [1,2,3,4,5],
     ]:
         target_neuron=0
-        ntimer=Timer(5*minutes)
+        ntimer=Timer(1*minutes)
         jitters=[-1,1]+100*[0]
         todo=list(range(10))
         while todo:
