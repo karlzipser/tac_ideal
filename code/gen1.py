@@ -156,7 +156,9 @@ for repeat in range(repeats):
                 input_image=train_inputs
                 cb(input_image.size())
                 #input_image = torch.randn(1, 3, 32, 32,
-                    requires_grad=True,device=device)
+                input_image=input.todevice)
+                input_image.requires_grad=True
+
                 input_image_big = torch.randn(1, 3, 32+4, 32+4,
                     requires_grad=False,device=device)
                 optimizer = optim.Adam([input_image], lr=0.5, weight_decay=1e-6)
