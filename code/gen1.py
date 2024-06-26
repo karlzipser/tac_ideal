@@ -70,6 +70,60 @@ for repeat in range(repeats):
         mkdirp(opj(path,category))
         imsave(opj(path,category,time_str()+'.png'),fix_bgr(cuda_to_rgb_image(optimized_image)))
 
+
+
+
+
+
+
+
+    from torch.utils.data import DataLoader, Dataset
+    class GenDataset(Dataset):
+        def __init__(self, root, transform=None):
+            cy('GenDataset __init__()')
+            self.root = root
+            self.transform = transform
+            self.images = []
+            self.labels = []
+            fs0=sggo(opjD('data/gen0/*'))
+            for cf in fs0:
+                if not os.path.isdir(cf):
+                    continue
+                for image in sggo(cf,'*.png'):
+                    self.images.append(image)
+                    self.labels.append(fname(cf))
+                    #print(self.images[-1],self.labels[-1])
+            print('len(self.images)=',
+                len(self.images),'len(self.labels)=',len(self.labels))
+        def __len__(self):
+            return len(self.images)
+
+        def __getitem__(self, index):
+            image = rimread(self.images[index])
+            #sh(z55(image),title=d2s(image.max(),image.min()),r=0)
+            if self.transform:
+                image = self.transform(image)
+                #image-=0.5
+                #image*=2.
+            return image, self.labels[index]
+
+    classes2nums={}
+    for iii in rlen(classes):
+        classes2nums[classes[iii]]=iii
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     from utilz2.torch_ import *
     from skimage import color
     for layers in [
@@ -82,7 +136,26 @@ for repeat in range(repeats):
         while todo:
             target_neuron=todo.pop(0)
             try:
-                input_image = torch.randn(1, 3, 32, 32,
+
+
+                gen_train_transform = transforms.Compose([
+                    transforms.ToTensor(),
+                    transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+                    ]+geometric_transforms_list)
+                gen_traindata = GenDataset(
+                    root=opjD('data/gen0'), transform=gen_train_transform)
+                gen_trainloader = DataLoader(
+                    gen_traindata, batch_size=p.batch_size, shuffle=True)
+                gen_train_dataiter=iter(gen_trainloader)
+
+                while True:
+                    train_inputs,train_labels=next(gen_train_dataiter)
+                    print(train_labels[0],target_neuron)
+                    if train_labels[0]==target_neuron:
+                        break
+                input_image=train_inputs
+                cb(input_image.size())
+                #input_image = torch.randn(1, 3, 32, 32,
                     requires_grad=True,device=device)
                 input_image_big = torch.randn(1, 3, 32+4, 32+4,
                     requires_grad=False,device=device)
