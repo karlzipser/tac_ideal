@@ -10,6 +10,8 @@ if __name__ == '__main__':
         from .findideal import *
     elif s=='gen0':
         from .gen0 import *
+    elif s=='gen1':
+        from .gen1 import *
     elif s=='test0':
         from .test0 import *
     else:
