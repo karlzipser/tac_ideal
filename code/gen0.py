@@ -135,6 +135,7 @@ for repeat in range(repeats):
                         sh(input_image,10)
                         figure(11,figsize=(3,3))
                         show_sample_outputs(x,[target_neuron])
+                        plt.title(classes[target_neuron])
                         spause()
                     with torch.no_grad():
                         input_image.clamp_(-1, 1)
