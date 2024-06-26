@@ -88,9 +88,9 @@ def get_accuracy(net,testloader,classes,device):
                 else:
                     #mkdirp(pname(f)+'-incorrect')
                     #os_system('mv',f,pname(f)+'-incorrect')
-                    
+                    pass
                     #print(f,'is incorrect')
-                    sh(images[ctr,:],t=0.25)
+                    #sh(images[ctr,:],t=0.25)
                 ctr+=1
                 total_pred[classes[label_i[label]]] += 1
     stats=[]
