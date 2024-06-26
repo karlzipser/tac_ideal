@@ -309,7 +309,7 @@ for repeat in range(repeats):
                 gen_traindata = GenDataset(
                     root=opjD('data/gen0'), transform=gen_train_transform)
                 gen_trainloader = DataLoader(
-                    gen_traindata, batch_size=p.batch_size, shuffle=True)
+                    gen_traindata, batch_size=batch_size, shuffle=True)
                 gen_train_dataiter=iter(gen_trainloader)
 
                 while True:
