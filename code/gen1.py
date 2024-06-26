@@ -135,7 +135,7 @@ for repeat in range(repeats):
         todo=list(range(10))
         while todo:
             target_neuron=todo.pop(0)
-            try:
+            if True:#try:
 
 
                 gen_train_transform = transforms.Compose([
@@ -233,7 +233,7 @@ for repeat in range(repeats):
                 imgs[n][str(target_neuron)]=1*blank
                 figure(d2s(n),figsize=(9,9))
                 sh(imgs[n],d2s(n),r=0,use_dict_keys_as_titles=False)
-            
+            """
             except KeyboardInterrupt:
                 cr('*** KeyboardInterrupt ***')
                 sys.exit()
@@ -243,7 +243,7 @@ for repeat in range(repeats):
                 #file_name = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
                 #print('Exception!')
                 #print(d2s(exc_type,file_name,exc_tb.tb_lineno))   
-            
+            """
 
     savefigs(figures_path)
     print('plane', 'car', 'bird', 'cat',
