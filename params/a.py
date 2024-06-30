@@ -1,8 +1,7 @@
 ## 79 ########################################################################
 from utilz2 import *
 if host_name=='hiMac':
-	run_path='project_tac/20Jun24_12h29m11s'
-	run_path='project_tac/21Jun24_23h10m13s'
+	run_path='project_tac/29Jun24_21h01m50s'
 elif host_name=='jane':
 	run_path='project_tac/25Jun24_19h30m07s'
 elif host_name=='jake':
