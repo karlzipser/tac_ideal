@@ -19,6 +19,7 @@ for repeat in range(repeats):
     cE(repeat)
     device = torch.device(device if torch.cuda.is_available() else 'cpu')
 
+    cE('get_net()')
     net=get_net(
         device=device,
         run_path=run_path,
