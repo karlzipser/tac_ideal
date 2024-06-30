@@ -109,7 +109,7 @@ for repeat in range(repeats):
                     dy=np.random.choice(jitters)
                     input_image_big[0,:,1+dx:1+128+dx,1+dy:1+128+dy]=input_image
                     input_image[0,:,:,:]=input_image_big[0,:,1:128+1,1:128+1]
-                    input_image+=0.01*torch.randn(1, 3, 128, 128,
+                    input_image+=0.1*torch.randn(1, 3, 128, 128,
                             requires_grad=False,device=device)
                     #print(input_image.min(),input_image.max())
                     if torch.isnan(input_image).sum().item()>0:
