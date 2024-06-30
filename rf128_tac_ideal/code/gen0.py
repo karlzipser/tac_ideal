@@ -14,7 +14,7 @@ if 'project_' in __file__:
 ##############################################################################
 from projutils import *
 from ..params.a import *
-
+cb(run_path,r=1)
 for repeat in range(repeats):
     cE(repeat)
     device = torch.device(device if torch.cuda.is_available() else 'cpu')
@@ -48,7 +48,7 @@ for repeat in range(repeats):
             l[labels[i]]=1
             clf()
             plot(o/o.max(),'r')
-            #plot(o,'k')
+            plot(o,'k')
             plot(l,'b')
             #cm()
     #
@@ -83,10 +83,10 @@ for repeat in range(repeats):
     from utilz2.torch_ import *
     from skimage import color
     for layers in [
-         list(range(3,25)),
+         list(range(2,23)),
     ]:
         target_neuron=0
-        ntimer=Timer(10)
+        ntimer=Timer(20)
         jitters=[-1,1]+100*[0]
         todo=list(range(10))
         input_image_prev = torch.randn(1, 3, 128, 128,
@@ -98,7 +98,7 @@ for repeat in range(repeats):
                     requires_grad=True,device=device)
                 input_image_big = torch.randn(1, 3, 128+4, 128+4,
                     requires_grad=False,device=device)
-                optimizer = optim.Adam([input_image], lr=.5, weight_decay=1e-6)
+                optimizer = optim.Adam([input_image], lr=lr, weight_decay=1e-6)
                 for i in range(5000000):
                     if ntimer.rcheck():
                         break
@@ -109,7 +109,7 @@ for repeat in range(repeats):
                     dy=np.random.choice(jitters)
                     input_image_big[0,:,1+dx:1+128+dx,1+dy:1+128+dy]=input_image
                     input_image[0,:,:,:]=input_image_big[0,:,1:128+1,1:128+1]
-                    input_image+=0.025*torch.randn(1, 3, 128, 128,
+                    input_image+=0.01*torch.randn(1, 3, 128, 128,
                             requires_grad=False,device=device)
                     #print(input_image.min(),input_image.max())
                     if torch.isnan(input_image).sum().item()>0:
