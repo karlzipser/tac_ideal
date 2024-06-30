@@ -5,7 +5,7 @@ if host_name=='hiMac':
 elif host_name=='jane':
 	run_path='project_tac/25Jun24_19h30m07s'
 else:
-    run_path='project_tac/30Jun24_00h49m16s'
+    run_path='project_tac/30Jun24_01h11m44s'
 device='cuda:1'
 batch_size=1
 num_workers=4
