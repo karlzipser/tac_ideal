@@ -16,7 +16,7 @@ from projutils import *
 from ..params.a import *
 cy(run_path,r=1)
 while True:
-    try:
+    if True:#try:
         for repeat in range(repeats):
             cE(repeat)
             device = torch.device(device if torch.cuda.is_available() else 'cpu')
@@ -219,6 +219,8 @@ while True:
             print('plane', 'car', 'bird', 'cat',
                        'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
             #input('here')
+    try:
+        pass
     except KeyboardInterrupt:
         cr('*** KeyboardInterrupt ***')
         sys.exit()
