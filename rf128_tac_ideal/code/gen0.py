@@ -88,7 +88,7 @@ while True:
                  list(range(2,23)),
             ]:
                 target_neuron=0
-                ntimer=Timer(20)
+                ntimer=Timer(40)
                 jitters=[-1,1]+100*[0]
                 todo=list(range(10))
                 input_image_prev = torch.randn(1, 3, 128, 128,
