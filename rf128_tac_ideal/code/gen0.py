@@ -14,7 +14,7 @@ if 'project_' in __file__:
 ##############################################################################
 from projutils import *
 from ..params.a import *
-cb(run_path,r=1)
+cy(run_path,r=1)
 while True:
     try:
         for repeat in range(repeats):
